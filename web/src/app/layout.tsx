@@ -3,6 +3,7 @@ import { Manrope } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ThemeProvider } from '@/components/theme';
 import { WEBSITE_METADATA } from '@/constants';
+import { ReactQueryProvider } from '@/components/providers/react-query';
 import './globals.css';
 
 const manrope = Manrope({
@@ -25,7 +26,7 @@ export default function RootLayout({
             defaultTheme='dark'
             disableTransitionOnChange
           >
-            {children}
+            <ReactQueryProvider>{children}</ReactQueryProvider>
           </ThemeProvider>
         </body>
       </html>
