@@ -24,7 +24,7 @@ export function LandingPageNavbar() {
         <Link href='#contact'>Contact</Link>
       </div>
 
-      <Link href='/auth/signin'>
+      <Link href='/auth/sign-in'>
         <Button className='text-base flex gap-x-2'>
           <UserIcon fill='#000' />
           Login
