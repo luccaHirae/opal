@@ -11,6 +11,7 @@ import {
 import { redirect } from 'next/navigation';
 import { QUERY_KEYS, queryClient } from '@/lib/react-query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { Sidebar } from '@/components/global/sidebar';
 
 interface WorkSpacePageProps {
   params: {
@@ -58,7 +59,10 @@ export default async function WorkSpaceLayout({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className='flex h-screen w-screen'>{children}</div>
+      <div className='flex h-screen w-screen'>
+        <Sidebar activeWorkSpaceId={workSpaceId} />
+        {children}
+      </div>
     </HydrationBoundary>
   );
 }
