@@ -3,7 +3,7 @@
 import { client } from '@/lib/prisma';
 import { currentUser } from '@clerk/nextjs/server';
 
-export const verifyAccessToWorkspace = async (workspaceId: string) => {
+export const verifyAccessToWorkspace = async (workSpaceId: string) => {
   try {
     const user = await currentUser();
 
@@ -13,9 +13,9 @@ export const verifyAccessToWorkspace = async (workspaceId: string) => {
         message: 'User not authenticated',
       };
 
-    const workspace = await client.workSpace.findUnique({
+    const workSpace = await client.workSpace.findUnique({
       where: {
-        id: workspaceId,
+        id: workSpaceId,
         OR: [
           {
             user: {
@@ -35,17 +35,17 @@ export const verifyAccessToWorkspace = async (workspaceId: string) => {
       },
     });
 
-    if (workspace) {
+    if (workSpace) {
       return {
         status: 200,
-        data: workspace,
+        data: workSpace,
       };
     }
 
     return {
       status: 403,
       data: null,
-      message: 'Access denied to workspace',
+      message: 'Access denied to workSpace',
     };
   } catch (err) {
     if (err instanceof Error) {
@@ -90,6 +90,77 @@ export const getWorkspaceFolders = async (workSpaceId: string) => {
       status: 404,
       data: [],
       message: 'No folders found for this workspace',
+    };
+  } catch (err) {
+    if (err instanceof Error) {
+      return {
+        status: 500,
+        data: [],
+        message: err.message,
+      };
+    }
+
+    return {
+      status: 500,
+      data: [],
+      message: 'An unexpected error occurred',
+    };
+  }
+};
+
+export const getUserWorkspaces = async () => {
+  try {
+    const user = await currentUser();
+
+    if (!user)
+      return {
+        status: 403,
+        data: [],
+        message: 'User not authenticated',
+      };
+
+    const workSpaces = await client.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        subscription: {
+          select: {
+            plan: true,
+          },
+        },
+        workSpace: {
+          select: {
+            id: true,
+            name: true,
+            type: true,
+          },
+        },
+        members: {
+          select: {
+            workSpace: {
+              select: {
+                id: true,
+                name: true,
+                type: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (workSpaces) {
+      return {
+        status: 200,
+        data: workSpaces,
+      };
+    }
+
+    return {
+      status: 404,
+      data: [],
+      message: 'No workspaces found for this user',
     };
   } catch (err) {
     if (err instanceof Error) {
