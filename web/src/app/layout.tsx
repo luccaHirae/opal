@@ -2,16 +2,14 @@ import type { Metadata } from 'next';
 import { Manrope } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ThemeProvider } from '@/components/theme';
+import { WEBSITE_METADATA } from '@/constants';
 import './globals.css';
 
 const manrope = Manrope({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: 'Opal',
-  description: 'Share AI powered videos with your friends.',
-};
+export const metadata: Metadata = WEBSITE_METADATA;
 
 export default function RootLayout({
   children,
