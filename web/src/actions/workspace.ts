@@ -115,11 +115,10 @@ export const getUserWorkspaces = async () => {
     if (!user)
       return {
         status: 403,
-        data: [],
         message: 'User not authenticated',
       };
 
-    const workSpaces = await client.user.findUnique({
+    const data = await client.user.findUnique({
       where: {
         clerkId: user.id,
       },
@@ -150,30 +149,29 @@ export const getUserWorkspaces = async () => {
       },
     });
 
-    if (workSpaces) {
+    if (data) {
       return {
         status: 200,
-        data: workSpaces,
+        workSpaces: data.workSpace,
+        members: data.members,
+        subscription: data.subscription,
       };
     }
 
     return {
       status: 404,
-      data: [],
       message: 'No workspaces found for this user',
     };
   } catch (err) {
     if (err instanceof Error) {
       return {
         status: 500,
-        data: [],
         message: err.message,
       };
     }
 
     return {
       status: 500,
-      data: [],
       message: 'An unexpected error occurred',
     };
   }
