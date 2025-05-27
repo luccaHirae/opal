@@ -5,7 +5,7 @@ export default async function DashboardPage() {
   const auth = await onAuthenticateUser();
 
   if (auth.status === 200 || auth.status === 201) {
-    return redirect(`/dashboard/${auth.user?.firstName}${auth.user?.lastName}`);
+    return redirect(`/dashboard/${auth.user?.workSpace[0].id}`);
   }
 
   if (auth.status === 403) {
