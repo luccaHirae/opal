@@ -161,7 +161,7 @@ export const getUserNotifications = async () => {
         message: 'User not authenticated',
       };
 
-    const notifications = await client.user.findUnique({
+    const userWithNotifications = await client.user.findUnique({
       where: {
         clerkId: user.id,
       },
@@ -175,16 +175,19 @@ export const getUserNotifications = async () => {
       },
     });
 
-    if (notifications && notifications.notifications.length > 0) {
+    if (
+      userWithNotifications &&
+      userWithNotifications.notifications.length > 0
+    ) {
       return {
         status: 200,
-        data: notifications,
+        notifications: userWithNotifications.notifications,
+        count: userWithNotifications._count.notifications,
       };
     }
 
     return {
       status: 404,
-      data: [],
       message: 'No notifications found',
     };
   } catch (err) {
