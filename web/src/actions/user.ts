@@ -201,3 +201,63 @@ export const getUserNotifications = async () => {
     };
   }
 };
+
+export const searchUsers = async (query: string) => {
+  try {
+    const user = await currentUser();
+
+    if (!user)
+      return {
+        status: 403,
+        message: 'User not authenticated',
+      };
+
+    const users = await client.user.findMany({
+      where: {
+        OR: [
+          { firstName: { contains: query, mode: 'insensitive' } },
+          { email: { contains: query, mode: 'insensitive' } },
+          { lastName: { contains: query, mode: 'insensitive' } },
+        ],
+        NOT: [{ clerkId: user.id }],
+      },
+      select: {
+        id: true,
+        subscription: {
+          select: {
+            plan: true,
+          },
+        },
+        firstName: true,
+        lastName: true,
+        image: true,
+        email: true,
+      },
+    });
+
+    if (users && users.length > 0) {
+      return {
+        status: 200,
+        users,
+      };
+    }
+
+    return {
+      status: 404,
+      users: [],
+      message: 'No users found',
+    };
+  } catch (err) {
+    if (err instanceof Error) {
+      return {
+        status: 500,
+        message: err.message,
+      };
+    }
+
+    return {
+      status: 500,
+      message: 'An unexpected error occurred',
+    };
+  }
+};
