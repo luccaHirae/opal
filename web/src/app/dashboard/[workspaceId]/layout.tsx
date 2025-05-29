@@ -12,6 +12,7 @@ import { redirect } from 'next/navigation';
 import { QUERY_KEYS, queryClient } from '@/lib/react-query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Sidebar } from '@/components/global/sidebar';
+import { GlobalHeader } from '@/components/global/global-header';
 
 interface WorkSpacePageProps {
   params: {
@@ -61,7 +62,10 @@ export default async function WorkSpaceLayout({
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className='flex h-screen w-screen'>
         <Sidebar activeWorkSpaceId={workSpaceId} />
-        {children}
+        <div className='w-full pt-28 p-6 overflow-y-scroll overflow-x-hidden'>
+          <GlobalHeader workspace={hasAccess.data} />
+          <div className='mt-4'>{children}</div>
+        </div>
       </div>
     </HydrationBoundary>
   );
