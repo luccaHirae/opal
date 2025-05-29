@@ -15,12 +15,16 @@ import { QUERY_KEYS } from '@/lib/react-query';
 import { getUserWorkspaces } from '@/actions/workspace';
 import { useQuery } from '@tanstack/react-query';
 import { Modal } from '@/components/global/modal';
-import { PlusCircleIcon } from 'lucide-react';
+import { MenuIcon, PlusCircleIcon } from 'lucide-react';
 import { UsersSearch } from '@/components/global/user-search';
 import { MENU_ITEMS } from '@/constants';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { getUserNotifications } from '@/actions/user';
+import { GlobalCard } from '@/components/global/global-card';
+import { Button } from '@/components/ui/button';
+import { Loader } from '@/components/global/loader';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 interface SidebarProps {
   activeWorkSpaceId: string;
@@ -52,7 +56,7 @@ export function Sidebar({ activeWorkSpaceId }: SidebarProps) {
 
   const menuItems = MENU_ITEMS(activeWorkSpaceId);
 
-  return (
+  const SidebarSection = (
     <div className='bg-[#111111] flex-none relative p-4 h-full w-[250px] flex flex-col gap-4 items-center overflow-hidden'>
       <div className='bg-[#111111] p-4 gap-2 justify-center items-center mb-4 absolute top-0 left-0 right-0'>
         <Image src='/opal-logo.svg' alt='logo' width={40} height={40} />
@@ -189,11 +193,36 @@ export function Sidebar({ activeWorkSpaceId }: SidebarProps) {
 
       <Separator className='w-4/5' />
 
-      {
-        data?.subscription?.plan === 'FREE' && (
-          <></>
-        ) /* Placeholder for future features */
-      }
+      {data?.subscription?.plan === 'FREE' && (
+        <GlobalCard
+          title='Upgrate To Pro'
+          description='Unlock AI features like transcription, AI summary, and more.'
+          footer={
+            <Button className='text-sm w-full mt-2'>
+              <Loader state={false}>Upgrade</Loader>
+            </Button>
+          }
+        />
+      )}
+    </div>
+  );
+
+  return (
+    <div className='h-full'>
+      <div className='md:hidden fixed my-4'>
+        <Sheet>
+          <SheetTrigger asChild className='ml-2'>
+            <Button variant='ghost' className='mt-[2px]'>
+              <MenuIcon />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side='left' className='p-0 w-fit h-full'>
+            {SidebarSection}
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      <div className='md:block hidden h-full'>{SidebarSection}</div>
     </div>
   );
 }
