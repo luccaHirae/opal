@@ -10,6 +10,7 @@ export const QUERY_KEYS = {
 
 export const MUTATION_KEYS = {
   INVITE_MEMBER: 'invite-member',
+  CREATE_WORKSPACE: 'create-workspace',
 };
 
 export const queryClient = new QueryClient();
