@@ -25,6 +25,7 @@ import { GlobalCard } from '@/components/global/global-card';
 import { Button } from '@/components/ui/button';
 import { Loader } from '@/components/global/loader';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { InfoBar } from '@/components/global/info-bar';
 
 interface SidebarProps {
   activeWorkSpaceId: string;
@@ -209,6 +210,8 @@ export function Sidebar({ activeWorkSpaceId }: SidebarProps) {
 
   return (
     <div className='h-full'>
+      <InfoBar />
+
       <div className='md:hidden fixed my-4'>
         <Sheet>
           <SheetTrigger asChild className='ml-2'>
