@@ -176,3 +176,70 @@ export const getUserWorkspaces = async () => {
     };
   }
 };
+
+export const createWorkspace = async (name: string) => {
+  try {
+    const user = await currentUser();
+
+    if (!user) {
+      return {
+        status: 403,
+        message: 'User not authenticated',
+      };
+    }
+
+    const userWithSubscription = await client.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        subscription: {
+          select: {
+            plan: true,
+          },
+        },
+      },
+    });
+
+    if (userWithSubscription?.subscription?.plan === 'PRO') {
+      const updatedUser = await client.user.update({
+        where: {
+          clerkId: user.id,
+        },
+        data: {
+          workSpace: {
+            create: {
+              name,
+              type: 'PUBLIC',
+            },
+          },
+        },
+      });
+
+      if (updatedUser) {
+        return {
+          status: 201,
+          user: updatedUser,
+          message: 'Workspace created successfully',
+        };
+      }
+    }
+
+    return {
+      status: 403,
+      message: 'You need a PRO subscription to create a workspace',
+    };
+  } catch (err) {
+    if (err instanceof Error) {
+      return {
+        status: 500,
+        message: err.message,
+      };
+    }
+
+    return {
+      status: 500,
+      message: 'An unexpected error occurred',
+    };
+  }
+};
