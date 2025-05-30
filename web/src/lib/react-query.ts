@@ -11,6 +11,8 @@ export const QUERY_KEYS = {
 export const MUTATION_KEYS = {
   INVITE_MEMBER: 'invite-member',
   CREATE_WORKSPACE: 'create-workspace',
+  RENAME_FOLDER: 'rename-folder',
+  CREATE_FOLDER: 'create-folder',
 };
 
 export const queryClient = new QueryClient();
