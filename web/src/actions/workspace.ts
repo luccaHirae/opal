@@ -66,7 +66,7 @@ export const verifyAccessToWorkspace = async (workSpaceId: string) => {
 
 export const getWorkspaceFolders = async (workSpaceId: string) => {
   try {
-    const isFolders = await client.folder.findMany({
+    const folders = await client.folder.findMany({
       where: {
         workSpaceId,
       },
@@ -79,30 +79,27 @@ export const getWorkspaceFolders = async (workSpaceId: string) => {
       },
     });
 
-    if (isFolders && isFolders.length > 0) {
+    if (folders && folders.length > 0) {
       return {
         status: 200,
-        data: isFolders,
+        folders,
       };
     }
 
     return {
       status: 404,
-      data: [],
       message: 'No folders found for this workspace',
     };
   } catch (err) {
     if (err instanceof Error) {
       return {
         status: 500,
-        data: [],
         message: err.message,
       };
     }
 
     return {
       status: 500,
-      data: [],
       message: 'An unexpected error occurred',
     };
   }
