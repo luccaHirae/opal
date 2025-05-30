@@ -3,6 +3,7 @@ import {
   MutationFunction,
   MutationKey,
   useMutation,
+  useMutationState,
 } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -30,5 +31,23 @@ export function useMutationData(
   return {
     mutate,
     isPending,
+  };
+}
+
+export function useMutationDataState(mutationKey: MutationKey) {
+  const data = useMutationState({
+    filters: {
+      mutationKey,
+    },
+    select: (mutation) => ({
+      variables: mutation.state.variables,
+      status: mutation.state.status,
+    }),
+  });
+
+  const latestVariables = data[data.length - 1];
+
+  return {
+    latestVariables,
   };
 }
