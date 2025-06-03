@@ -1,18 +1,21 @@
+import { FolderIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useCreateFolders } from '@/hooks/use-create-folders';
+
 interface CreateFoldersProps {
   workspaceId: string;
 }
 
-export function CreateFolders({}: CreateFoldersProps) {
+export function CreateFolders({ workspaceId }: CreateFoldersProps) {
+  const { onCreateNewFolder } = useCreateFolders(workspaceId);
+
   return (
-    <div className='flex flex-col gap-2'>
-      <h2 className='text-lg font-semibold'>Create Folders</h2>
-      <p className='text-sm text-gray-500'>
-        Create folders to organize your files and documents.
-      </p>
-      <div className='flex flex-col gap-4 mt-4'>
-        <button className='btn btn-primary'>Create Folder</button>
-        <button className='btn btn-secondary'>Create Subfolder</button>
-      </div>
-    </div>
+    <Button
+      onClick={onCreateNewFolder}
+      className='bg-[#1d1d1d] text-[#707070] fle items-center gap-2 py-6 px-4 rounded-2xl'
+    >
+      <FolderIcon />
+      Create a folder
+    </Button>
   );
 }
