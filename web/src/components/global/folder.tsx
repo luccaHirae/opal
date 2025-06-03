@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Loader } from '@/components/global/loader';
 import { FolderDot } from 'lucide-react';
 import { useRef, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useMutationState } from '@tanstack/react-query';
 import { MUTATION_KEYS, QUERY_KEYS, queryClient } from '@/lib/react-query';
 import { renameFolder } from '@/actions/workspace';
 import { Input } from '@/components/ui/input';
@@ -40,6 +40,22 @@ export function Folder({
     },
     onSuccess: () => setOnRename(false),
   });
+
+  const mutationState = useMutationState({
+    filters: {
+      mutationKey: [MUTATION_KEYS.RENAME_FOLDER],
+    },
+    select: (mutation) => ({
+      variables: mutation.state.variables as { folderId: string; name: string },
+      status: mutation.state.status,
+    }),
+  });
+
+  const latestVariables = mutationState[mutationState.length - 1];
+  const isRenamingCurrentFolder =
+    latestVariables &&
+    latestVariables.status === 'pending' &&
+    latestVariables.variables.folderId === id;
 
   const handleFolderClick = () => {
     router.push(`${pathname}/folder/${id}`);
@@ -87,7 +103,7 @@ export function Folder({
               onDoubleClick={handleNameDoubleClick}
               className='text-neutral-300'
             >
-              {name}
+              {isRenamingCurrentFolder ? latestVariables.variables.name : name}
             </p>
           )}
 
