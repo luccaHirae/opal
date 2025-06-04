@@ -127,13 +127,12 @@ export const getUserVideos = async (workSpaceId: string) => {
     if (videos && videos.length > 0) {
       return {
         status: 200,
-        data: videos,
+        videos,
       };
     }
 
     return {
       status: 404,
-      data: [],
       message: 'No videos found',
     };
   } catch (err) {
