@@ -6,6 +6,8 @@ export const QUERY_KEYS = {
   USER_WORKSPACES: 'user-workspaces',
   USER_NOTIFICATIONS: 'user-notifications',
   GET_USERS: 'get-users',
+  FOLDER_VIDEOS: 'folder-videos',
+  FOLDER_DETAILS: 'folder-details',
 };
 
 export const MUTATION_KEYS = {
