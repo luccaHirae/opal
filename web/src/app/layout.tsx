@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme';
 import { WEBSITE_METADATA } from '@/constants';
 import { ReactQueryProvider } from '@/components/providers/react-query';
 import { ReduxProvider } from '@/redux/provider';
+import { Toaster } from 'sonner';
 import './globals.css';
 
 const manrope = Manrope({
@@ -28,7 +29,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ReduxProvider>
-              <ReactQueryProvider>{children}</ReactQueryProvider>
+              <ReactQueryProvider>
+                {children}
+                <Toaster />
+              </ReactQueryProvider>
             </ReduxProvider>
           </ThemeProvider>
         </body>
