@@ -361,3 +361,46 @@ export const getFolderDetails = async (folderId: string) => {
     };
   }
 };
+
+export const moveVideoLocation = async (
+  videoId: string,
+  folderId: string,
+  workspaceId: string
+) => {
+  try {
+    const video = await client.video.update({
+      where: {
+        id: videoId,
+      },
+      data: {
+        folderId,
+        workSpaceId: workspaceId,
+      },
+    });
+
+    if (video) {
+      return {
+        status: 200,
+        video,
+        message: 'Video moved successfully',
+      };
+    }
+
+    return {
+      status: 404,
+      message: 'Video not found',
+    };
+  } catch (err) {
+    if (err instanceof Error) {
+      return {
+        status: 500,
+        message: err.message,
+      };
+    }
+
+    return {
+      status: 500,
+      message: 'An unexpected error occurred',
+    };
+  }
+};
