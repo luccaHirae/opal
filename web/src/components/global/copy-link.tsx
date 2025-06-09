@@ -1,4 +1,4 @@
-import { LinkIcon } from 'lucide-react';
+import { Link2Icon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
@@ -44,7 +44,7 @@ export function CopyLink({
       onClick={handleCopy.bind(null, videoId)}
       className={className}
     >
-      <LinkIcon size={20} className='text-[#a4a4a4]' />
+      <Link2Icon size={20} className='text-[#a4a4a4]' />
     </Button>
   );
 }
