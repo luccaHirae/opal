@@ -15,6 +15,7 @@ export const MUTATION_KEYS = {
   CREATE_WORKSPACE: 'create-workspace',
   RENAME_FOLDER: 'rename-folder',
   CREATE_FOLDER: 'create-folder',
+  CHANGE_VIDEO_LOCATION: 'change-video-location',
 };
 
 export const queryClient = new QueryClient();
