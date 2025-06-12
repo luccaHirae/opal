@@ -8,6 +8,7 @@ export const QUERY_KEYS = {
   GET_USERS: 'get-users',
   FOLDER_VIDEOS: 'folder-videos',
   FOLDER_DETAILS: 'folder-details',
+  PREVIEW_VIDEO: 'preview-video',
 };
 
 export const MUTATION_KEYS = {
