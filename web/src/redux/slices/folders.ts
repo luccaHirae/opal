@@ -2,10 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface initialStateProps {
   folders: ({
-    id: string;
     name: string;
+    id: string;
     createdAt: Date;
-    workspaceId: string | null;
+    updatedAt: Date;
+    workSpaceId: string | null;
   } & {
     _count: {
       videos: number;
@@ -30,10 +31,11 @@ export const foldersSlice = createSlice({
     addFolder: (
       state,
       action: PayloadAction<{
-        id: string;
         name: string;
+        id: string;
         createdAt: Date;
-        workspaceId: string | null;
+        updatedAt: Date;
+        workSpaceId: string | null;
         _count: {
           videos: number;
         };

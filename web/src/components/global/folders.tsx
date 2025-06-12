@@ -6,12 +6,16 @@ import { Folder } from '@/components/global/folder';
 import { useMutationState, useQuery } from '@tanstack/react-query';
 import { MUTATION_KEYS, QUERY_KEYS } from '@/lib/react-query';
 import { getWorkspaceFolders } from '@/actions/workspace';
+import { useDispatch } from 'react-redux';
+import { setFolders } from '@/redux/slices/folders';
 
 interface FoldersProps {
   workspaceId: string;
 }
 
 export function Folders({ workspaceId }: FoldersProps) {
+  const dispatch = useDispatch();
+
   const { data, isFetched } = useQuery({
     queryKey: [QUERY_KEYS.WORKSPACE_FOLDERS],
     queryFn: () => getWorkspaceFolders(workspaceId),
@@ -30,6 +34,7 @@ export function Folders({ workspaceId }: FoldersProps) {
   const latestVariables = mutationState[mutationState.length - 1];
 
   if (isFetched && data?.folders) {
+    dispatch(setFolders({ folders: data.folders }));
   }
 
   return (
