@@ -404,3 +404,69 @@ export const moveVideoLocation = async (
     };
   }
 };
+
+export const getPreviewVideo = async (videoId: string) => {
+  try {
+    const user = await currentUser();
+
+    if (!user) {
+      return {
+        status: 403,
+        message: 'User not authenticated',
+      };
+    }
+
+    const video = await client.video.findUnique({
+      where: {
+        id: videoId,
+      },
+      select: {
+        title: true,
+        createdAt: true,
+        source: true,
+        description: true,
+        processing: true,
+        views: true,
+        summary: true,
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            image: true,
+            clerkId: true,
+            subscription: {
+              select: {
+                plan: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (video) {
+      return {
+        status: 200,
+        video,
+        isAuthor: video.user.clerkId === user.id,
+      };
+    }
+
+    return {
+      status: 404,
+      message: 'Video not found',
+    };
+  } catch (err) {
+    if (err instanceof Error) {
+      return {
+        status: 500,
+        message: err.message,
+      };
+    }
+
+    return {
+      status: 500,
+      message: 'An unexpected error occurred',
+    };
+  }
+};
